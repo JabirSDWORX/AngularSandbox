@@ -13,13 +13,32 @@ export class AppComponent {
   num1: number;
   num2: number;
   operation: string;
+  // tslint:disable-next-line: no-inferrable-types
   result: number = 0;
 
-
-  // tslint:disable-next-line: typedeftest
+  // tslint:disable-next-line: typedef
   calculate(){
-    alert(this.num1);
-    alert(this.num2);
+    // alert(this.num1);
+    // alert(this.num2);
     this.result = this.num1 + this.num2;
+
+    switch(this.operation){
+      case '-': {
+        this.result = this.num1 - this.num2;
+        break;
+      }
+      case '*': {
+        this.result = this.num1 * this.num2;
+        break;
+      }
+      case '/': {
+        this.result = this.num1 / this.num2;
+        break;
+      }
+      default: {
+        this.result = this.num1 + this.num2;
+        break;
+      }
+    }
   }
 }
