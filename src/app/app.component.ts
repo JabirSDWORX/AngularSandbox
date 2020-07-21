@@ -20,7 +20,6 @@ export class AppComponent {
   calculate(){
     // alert(this.num1);
     // alert(this.num2);
-    this.result = this.num1 + this.num2;
 
     switch(this.operation){
       case '-': {
