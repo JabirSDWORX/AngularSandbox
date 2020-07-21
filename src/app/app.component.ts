@@ -21,7 +21,7 @@ export class AppComponent {
     // alert(this.num1);
     // alert(this.num2);
 
-    switch(this.operation){
+    switch (this.operation){
       case '-': {
         this.result = this.num1 - this.num2;
         break;
