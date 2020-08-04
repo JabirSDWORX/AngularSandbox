@@ -1,20 +1,7 @@
-<p>Hello {{name}}!</p>
+<master-header></master-header>
 
-<p>Sum: {{2*2}}</p>
+<div class="container mt-4 mb-4">
+  <router-outlet></router-outlet>
+</div>
 
-<input [(ngModel)]="num1" type="number">
-<select [(ngModel)]="operation" name="" id ="">
-  <option>+</option>
-  <option>-</option>
-  <option>*</option>
-  <option>/</option>
-</select>
-
-<input [(ngModel)]="num2" type="number">
-
-<button (click)= "calculate()">Calc</button>
-
-<h6>Result is {{result}}</h6>
-
-
-<router-outlet></router-outlet>
+<master-footer></master-footer>

@@ -1,0 +1,84 @@
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+          <input [(ngModel)]="searchInput" (keyup.enter)="searchCar()" type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+          <div class="input-group-append" (click)="clearSearch()">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fa fa-times"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-2">
+    <app-drawer [brandNames]="carBrands"></app-drawer>
+  </div>
+  <div class="col-10">
+    <div class="row">
+      <div class="col-12" *ngIf="!filterCarList.length">
+        <p>No Cars available!</p>
+      </div>
+      <div class="col-4" *ngFor="let car of filterCarList; let i = index">
+        <div class="card"> <!-- [ngClass]="{'bg-dark text-light': !(i%2), 'bg-primary': i%2}" -->
+          <img [src]="car.image_car" class="card-img-top card-image-height" [alt]="car.name"/>
+          <div class="card-body">
+            <h4 [tooltip]="carTooltip">{{ car.name }}</h4>
+            <ng-template #carTooltip>
+              <p>Body Type: <strong>{{ car.body_type }}</strong></p>
+              <p>Price: <strong>{{ car.currency }} {{ car.price }}</strong></p>
+            </ng-template>
+            <p class="card-text">{{ car.desc_excerpt }}</p>
+            <a [routerLink]="['/car', car._id]" class="btn btn-outline-primary mr-2">
+              <i class="fa fa-eye mr-2"></i>
+              View
+            </a>
+            <a (click)="openModal(template)" class="btn btn-outline-danger"> <!--  (click)="deleteCurrentCar(car._id)" -->
+              <i class="fa mr-2" [ngClass]="{'fa-times text-danger': !(i%2), 'fa-trash': i%2}"></i>
+              Delete
+            </a>
+            <ng-template #template>
+              <div class="modal-body text-center">
+                <p>Do you want to Delete {{ car.name }}?</p>
+                <button type="button" class="btn btn-default" (click)="deleteCurrentCar(car._id)" >Yes</button>
+                <button type="button" class="btn btn-primary" (click)="declineCarDeletion()" >No</button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Transmission</th>
+      <th scope="col">Price</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let car of CarList; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ car.name }}</td>
+      <td>{{ car.transmission }}</td>
+      <td>{{ car.price }}</td>
+      <td>
+        <button class="btn btn-info" [routerLink]="['/car', car._id]">View</button>
+        <button class="btn btn-danger" (click)="deleteCurrentCar(car._id)" >Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table> -->
