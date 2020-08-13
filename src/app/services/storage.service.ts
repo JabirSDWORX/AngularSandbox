@@ -18,4 +18,9 @@ export class StorageService {
     const str = localStorage.getItem(key);
     return JSON.parse(str);
   }
+
+  // tslint:disable-next-line: typedef
+  remove(key){
+    localStorage.removeItem(key);
+  }
 }

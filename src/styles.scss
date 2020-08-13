@@ -1,7 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.min.css";
+@import "~bootstrap/scss/bootstrap";
 
 .card-image-height{
   height: 160px;
+}
+
+.navbar-mode-light{
+  @extend .navbar-light;
+  @extend .bg-light;
+}
+
+.navbar-mode-dark{
+  @extend .navbar-dark;
+  @extend .bg-dark;
+}
+
+.navbar-mode-danger{
+  @extend .navbar-dark;
+  @extend .bg-danger;
 }

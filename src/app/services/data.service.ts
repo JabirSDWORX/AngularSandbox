@@ -154,4 +154,22 @@ export class DataService {
   // set cars(value){
   //   this.storage.set('cars', value);
   // }
+
+  // tslint:disable-next-line: typedef
+  editCar(carId, carData){
+    // tslint:disable-next-line: prefer-const
+    let carList = this.storage.get('cars');
+    let index = 0;
+
+    carList.forEach((x, i) => {
+      if (x._id === carId){
+        index = i;
+      }
+    });
+
+    carList[index].name = carData.name;
+    carList[index].description = carData.description;
+
+    this.storage.set('cars', carList);
+  }
 }

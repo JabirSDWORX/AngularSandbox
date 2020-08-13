@@ -1,9 +1,11 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { DataService } from '../../services/data.service';
 import { CarModel } from '../../models/car-model';
 import { CarDetailsComponent } from './car-details/car-details.component';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ModalComponent } from './modal/modal.component';
+import { EndpointsService } from '../../services/endpoints.service';
 
 @Component({
   selector: 'app-cars',
@@ -24,34 +26,47 @@ export class CarsComponent implements OnInit {
 
   message: string;
 
+  displayMode = true;
+
   constructor(
     public dataService: DataService,
-    public modalService: BsModalService
+    public modalService: BsModalService,
+    public endpoint: EndpointsService
   ) { }
 
   ngOnInit(): void {
     // this.dataService.initStorage(); // not in use
     this.getCars();
-    // this.carBrands = [...new Set(this.CarList.map(r => r.name))];  Same as below (shorter form)
-    this.carBrands = this.CarList.map((r) => {
-      if (!this.carBrands.includes(r.name)){
-        return r.name;
-      }
-    });
-    console.log(this.carBrands);
   }
 
   // tslint:disable-next-line: typedef
   getCars(){
-    this.CarList = this.dataService.cars;
-    this.filterCarList = [...this.CarList];
-    console.log('carList: ', this.CarList);
+    // this.endpoint.getCarList().subscribe(result => {
+    //   // tslint:disable-next-line: no-string-literal
+    //   this.CarList = result['data'];
+    //   this.filterCarList = [...this.CarList];
+    //   this.carBrands = this.CarList.map((r) => {
+    //     if (!this.carBrands.includes(r.name)){
+    //       return r.name;
+    //     }
+    //   });
+    // });
+
+    // same as above
+    this.endpoint.request('get', 'getCars').subscribe(result => {
+      this.CarList = result.data;
+      this.filterCarList = [...this.CarList];
+      this.carBrands = this.CarList.map((r) => {
+        if (!this.carBrands.includes(r.name)){
+          return r.name;
+        }
+      });
+    });
   }
 
   // tslint:disable-next-line: typedef
   deleteCurrentCar(id){
     this.CarList = this.dataService.deleteCarById(id);
-    this.modalRef.hide();
     this.getCars();
   }
 
@@ -74,8 +89,13 @@ export class CarsComponent implements OnInit {
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  // Modal Decline
-  declineCarDeletion(): void {
-    this.modalRef.hide();
+  // tslint:disable-next-line: typedef
+  // openModal() {
+  //   this.modalRef = this.modalService.show(ModalComponent, {class: 'modal-sm'});
+  // }
+
+  // tslint:disable-next-line: typedef
+  toggleCarDisplay(){
+    this.displayMode = !this.displayMode;
   }
 }

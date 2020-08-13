@@ -1,1 +1,216 @@
-<p>car-details works!</p>
+<div class="card">
+  <div class="card-header">
+    <i class="fa fa-pencil">
+      Edit Car
+    </i>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="carForm">
+      <div class="row">
+        <div class="col-6 offset-3">
+          <table class="table table-hover table-striped table-bordered mb-4">
+            <thead class="thead-dark">
+            <tr>
+              <th colspan="2">Validation for input car name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>ng valid: <span *ngIf="carForm.controls.name.valid"><i class="fa fa-check-circle text-success ml-2"></i></span></td>
+              <td>ng invalid: <span *ngIf="carForm.controls.name.invalid"><i class="fa fa-check-circle text-success ml-2"></i></span></td>
+            </tr>
+            <tr>
+              <td>ng dirty: <span *ngIf="carForm.controls.name.dirty"><i class="fa fa-check-circle text-success ml-2"></i></span></td>
+              <td>ng pristine: <span *ngIf="carForm.controls.name.pristine"><i class="fa fa-check-circle text-success ml-2"></i></span></td>
+            </tr>
+            <tr>
+              <td>ng touched: <span *ngIf="carForm.controls.name.touched"><i class="fa fa-check-circle text-success ml-2"></i></span></td>
+              <td>ng untouched: <span *ngIf="carForm.controls.name.untouched"><i class="fa fa-check-circle text-success ml-2"></i></span></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <!-- {{ carForm.value | json }}
+        {{ carForm.valid }} -->
+        <div *ngFor="let field of formFields">
+          <div class="row form-group">
+            <label class="col-3 text-right" for={{field}}>
+              {{ getLabel(field) }} <sup class="text-danger">*</sup>
+            </label>
+            <div class="col-8" [ngSwitch]="field">
+              <textarea class="form-control" [formControlName]="field" *ngSwitchCase="'description'" [ngClass]="{'is-invalid': carForm.controls[field].invalid && carForm.controls[field].dirty}"></textarea>
+              <input type="text" class="form-control" [formControlName]="field" *ngSwitchDefault [ngClass]="{'is-invalid': carForm.controls[field].invalid && carForm.controls[field].dirty}"/>
+              <p class="text-danger" *ngIf="carForm.controls[field].invalid && carForm.controls[field].dirty">This {{field}} is invalid!</p>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-3 offset-8">
+            <button class="btn btn-primary mr-3" (click)="editCarbySlug()" [disabled]="carForm.invalid">
+              Edit
+            </button>
+            <button class="btn btn-danger">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row form-group">
+        <label class="col-3 text-right">
+          Name
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['name']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Details
+        </label>
+        <div class="col-8">
+          <textarea id="exampleInputPassword1" class="form-control" [formControl]="carForm.controls['description']"></textarea>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Desc excerpt
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['desc_excerpt']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Body Type
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['body_type']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Engine
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['engine']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Mileage
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['mileage']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Fuel Type
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['fuel_type']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Transmission
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['transmission']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Door Count
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['door_count']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Price
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['price']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Date Online
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['date_online']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Date Offline
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['date_offline']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Currency
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['currency']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Contact Phone
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['contact_phone']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Contact Email
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['contact_email']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Ref
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['ref']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Slug
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['slug']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-3 text-right">
+          Image Path
+        </label>
+        <div class="col-8">
+          <input type="text" class="form-control" [formControl]="carForm.controls['image_car']"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-3 offset-8">
+          <button class="btn btn-primary mr-3" (click)="updateCar()" [disabled]="carForm.invalid">
+            Submit
+          </button>
+          <button class="btn btn-danger">
+            Cancel
+          </button>
+        </div>
+      </div> -->
+    </form>
+  </div>
+</div>
